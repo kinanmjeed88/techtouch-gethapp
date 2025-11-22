@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { SparklesIcon, NewsIcon, InfoIcon, ArrowRightIcon, CompareIcon, PhoneIcon } from './Icons';
+import { SparklesIcon, NewsIcon, InfoIcon, ArrowRightIcon, CompareIcon, PhoneIcon, MagicWandIcon } from './Icons';
 import { View } from '../types';
 
 interface HomeViewProps {
@@ -39,6 +39,24 @@ export const HomeView: React.FC<HomeViewProps> = ({ setView, onScroll }) => {
           </div>
         </button>
 
+        {/* Image Editor Card (NEW) */}
+        <button
+          onClick={() => setView('imageEditor')}
+          className="group relative overflow-hidden rounded-2xl bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:border-pink-500/50 transition-all duration-300 p-4 text-right w-full shadow-lg hover:shadow-pink-500/10"
+        >
+           <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="flex items-center justify-between relative z-10">
+             <div className="bg-pink-500/20 p-3 rounded-xl">
+                <MagicWandIcon className="w-5 h-5 text-pink-400" />
+             </div>
+             <div className="flex-1 mr-3">
+                <h3 className="text-base font-bold text-gray-100">استوديو الصور AI</h3>
+                <p className="text-[10px] text-gray-400 mt-0.5">تغيير ملابس، تعديل ملامح</p>
+             </div>
+             <ArrowRightIcon className="w-4 h-4 text-gray-500 group-hover:text-pink-400 transform group-hover:-translate-x-1 transition-all" />
+          </div>
+        </button>
+
          {/* Comparison Card */}
          <button
           onClick={() => setView('comparison')}
@@ -57,7 +75,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ setView, onScroll }) => {
           </div>
         </button>
 
-        {/* Phone News Card (NEW) */}
+        {/* Phone News Card */}
         <button
           onClick={() => setView('phoneNews')}
           className="group relative overflow-hidden rounded-2xl bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:border-indigo-500/50 transition-all duration-300 p-4 text-right w-full shadow-lg hover:shadow-indigo-500/10"

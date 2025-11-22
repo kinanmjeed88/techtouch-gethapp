@@ -7,7 +7,8 @@ import { PhoneNewsView } from './components/PhoneNewsView';
 import { HomeView } from './components/HomeView';
 import { ComparisonView } from './components/ComparisonView';
 import { AboutView } from './components/AboutView';
-import { SparklesIcon, NewsIcon, LogoutIcon, HomeIcon, CompareIcon, PhoneIcon, InfoIcon } from './components/Icons';
+import { ImageEditorView } from './components/ImageEditorView';
+import { SparklesIcon, NewsIcon, LogoutIcon, HomeIcon, CompareIcon, PhoneIcon, InfoIcon, MagicWandIcon } from './components/Icons';
 import { ChatMessage, View } from './types';
 import { ApiKeyModal } from './components/ApiKeyModal';
 import { Toaster } from 'react-hot-toast';
@@ -110,16 +111,17 @@ const App: React.FC = () => {
             {view === 'chat' && <ChatView messages={chatMessages} setMessages={setChatMessages} />}
             {view === 'personalInfo' && <PersonalInfoView messages={infoMessages} setMessages={setInfoMessages} />}
             {view === 'comparison' && <ComparisonView />}
+            {view === 'imageEditor' && <ImageEditorView />}
             {view === 'about' && <AboutView />}
           </main>
           
           {view !== 'home' && view !== 'about' && (
               <nav className="flex-shrink-0 bg-gray-800/80 backdrop-blur-md border-t border-gray-700 p-1 flex justify-around items-center z-20">
                   <NavButton active={view === 'chat'} onClick={() => setView('chat')} icon={<SparklesIcon className="w-5 h-5" />} label="Chat" />
-                  <NavButton active={view === 'aiNews'} onClick={() => setView('aiNews')} icon={<NewsIcon className="w-5 h-5" />} label="AI News" />
+                  <NavButton active={view === 'aiNews'} onClick={() => setView('aiNews')} icon={<NewsIcon className="w-5 h-5" />} label="News" />
+                  <NavButton active={view === 'imageEditor'} onClick={() => setView('imageEditor')} icon={<MagicWandIcon className="w-5 h-5" />} label="Studio" />
                   <NavButton active={view === 'phoneNews'} onClick={() => setView('phoneNews')} icon={<PhoneIcon className="w-5 h-5" />} label="Phones" />
                   <NavButton active={view === 'comparison'} onClick={() => setView('comparison')} icon={<CompareIcon className="w-5 h-5" />} label="Compare" />
-                  <NavButton active={view === 'personalInfo'} onClick={() => setView('personalInfo')} icon={<InfoIcon className="w-5 h-5" />} label="Info" />
               </nav>
           )}
       </div>
