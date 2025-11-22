@@ -31,4 +31,3 @@ export interface NewsItem {
   link: string;
   details: string;
 }
-

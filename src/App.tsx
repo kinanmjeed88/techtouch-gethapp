@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { ChatView } from './components/ChatView.tsx';
-import { PersonalInfoView } from './components/PersonalInfoView.tsx';
-import { AiNewsView } from './components/AiNewsView.tsx';
-import { PhoneNewsView } from './components/PhoneNewsView.tsx';
-import { HomeView } from './components/HomeView.tsx';
-import { ComparisonView } from './components/ComparisonView.tsx';
-import { AboutView } from './components/AboutView.tsx';
-import { ImageEditorView } from './components/ImageEditorView.tsx';
-import { SparklesIcon, NewsIcon, LogoutIcon, HomeIcon, CompareIcon, PhoneIcon, InfoIcon, MagicWandIcon } from './components/Icons.tsx';
-import { ChatMessage, View } from './types.ts';
-import { ApiKeyModal } from './components/ApiKeyModal.tsx';
+import { ChatView } from './components/ChatView';
+import { PersonalInfoView } from './components/PersonalInfoView';
+import { AiNewsView } from './components/AiNewsView';
+import { PhoneNewsView } from './components/PhoneNewsView';
+import { HomeView } from './components/HomeView';
+import { ComparisonView } from './components/ComparisonView';
+import { AboutView } from './components/AboutView';
+import { ImageEditorView } from './components/ImageEditorView';
+import { SparklesIcon, NewsIcon, LogoutIcon, HomeIcon, CompareIcon, PhoneIcon, MagicWandIcon } from './components/Icons';
+import { ChatMessage, View } from './types';
+import { ApiKeyModal } from './components/ApiKeyModal';
 import { Toaster } from 'react-hot-toast';
-import { APP_LOGO, LOCAL_USER_IMAGE } from './constants.ts';
+import { APP_LOGO, LOCAL_USER_IMAGE } from './constants';
 
 const App: React.FC = () => {
   const [view, setView] = useState<View>('home');
@@ -29,9 +29,14 @@ const App: React.FC = () => {
     if (storedKey) {
       setApiKey(storedKey);
     } else {
-        // Safe check for process.env to avoid crash in browser environment
-        const envKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : '';
-        if (envKey) setApiKey(envKey);
+        // Safe check for process.env to avoid crash in build/browser environment
+        try {
+           if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+             setApiKey(process.env.API_KEY);
+           }
+        } catch (e) {
+          // Ignore process error
+        }
     }
   }, []);
 

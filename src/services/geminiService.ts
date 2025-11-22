@@ -1,6 +1,6 @@
 import { GoogleGenAI, GenerateContentResponse, Type, Modality } from "@google/genai";
-import { SYSTEM_PROMPT } from '../constants.ts';
-import { NewsItem, PhoneNewsItem, ChatMessage } from "../types.ts";
+import { SYSTEM_PROMPT } from '../constants';
+import { NewsItem, PhoneNewsItem, ChatMessage } from "../types";
 
 interface TextPart {
   text: string;
@@ -17,9 +17,13 @@ const getApiKey = (): string => {
   const stored = localStorage.getItem('gemini-api-key');
   if (stored) return stored;
   
-  // Safe check for process.env in browser
-  if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
-      return process.env.API_KEY;
+  // Safe check for process.env to avoid crash
+  try {
+    if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+        return process.env.API_KEY;
+    }
+  } catch (e) {
+      // Ignore
   }
   return '';
 };

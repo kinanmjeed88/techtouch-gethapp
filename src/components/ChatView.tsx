@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { generateContent, generateContentStream } from '../services/geminiService.ts';
-import { extractTextFromFile, createDocxFromText } from '../services/documentProcessor.ts';
-import { ChatMessage } from '../types.ts';
-import { PaperclipIcon, SendIcon, FileIcon, DownloadIcon, CopyIcon, MicrophoneIcon, TrashIcon, SpeakerIcon, StopIcon } from './Icons.tsx';
-import { MarkdownRenderer } from './MarkdownRenderer.tsx';
+import { generateContent, generateContentStream } from '../services/geminiService';
+import { extractTextFromFile, createDocxFromText } from '../services/documentProcessor';
+import { ChatMessage } from '../types';
+import { PaperclipIcon, SendIcon, FileIcon, DownloadIcon, CopyIcon, MicrophoneIcon, TrashIcon, SpeakerIcon, StopIcon } from './Icons';
+import { MarkdownRenderer } from './MarkdownRenderer';
 import toast from 'react-hot-toast';
 
 // Web Speech API
