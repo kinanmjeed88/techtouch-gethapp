@@ -2,7 +2,8 @@
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <!-- بالإضافة إلى منع التكبير، interactive-widget=resizes-content تضمن ظهور المحتوى عند فتح الكيبورد -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -20,9 +21,12 @@
       window.addEventListener('DOMContentLoaded', () => {
         if (typeof pdfjsLib !== 'undefined') {
           // Explicitly set the worker version to match the main library
-          pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-          
           const workerUrl = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          
+          // Default assignment first
+          pdfjsLib.GlobalWorkerOptions.workerSrc = workerUrl;
+          
+          // Try Blob method for stricter environments
           fetch(workerUrl)
             .then(response => {
               if (!response.ok) throw new Error("Network response was not ok");

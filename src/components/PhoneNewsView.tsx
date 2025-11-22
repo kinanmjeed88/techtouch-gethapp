@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { getPhoneNews } from '../services/geminiService';
-import { PhoneNewsItem } from '../types';
-import { CopyIcon, PhoneIcon, TrashIcon, CpuIcon, BatteryIcon, CameraIcon, ScreenIcon, RamIcon, StorageIcon, SearchIcon, RefreshIcon } from './Icons';
+import { getPhoneNews } from '../services/geminiService.ts';
+import { PhoneNewsItem } from '../types.ts';
+import { CopyIcon, PhoneIcon, TrashIcon, CpuIcon, BatteryIcon, CameraIcon, ScreenIcon, RamIcon, StorageIcon, SearchIcon, RefreshIcon } from './Icons.tsx';
 import toast from 'react-hot-toast';
 
 interface PhoneNewsViewProps {

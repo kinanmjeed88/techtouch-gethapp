@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   TikTokIcon, 
@@ -6,8 +5,8 @@ import {
   TelegramIcon, 
   FacebookIcon, 
   InstagramIcon 
-} from './Icons';
-import { APP_LOGO, LOCAL_USER_IMAGE } from '../constants';
+} from './Icons.tsx';
+import { APP_LOGO, LOCAL_USER_IMAGE } from '../constants.ts';
 
 export const AboutView: React.FC = () => {
   const [imgSrc, setImgSrc] = useState(LOCAL_USER_IMAGE);

@@ -1,10 +1,9 @@
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { generateContent, generateContentStream } from '../services/geminiService';
-import { extractTextFromFile, createDocxFromText } from '../services/documentProcessor';
-import { ChatMessage } from '../types';
-import { PaperclipIcon, SendIcon, FileIcon, DownloadIcon, CopyIcon, MicrophoneIcon, TrashIcon, SpeakerIcon, StopIcon } from './Icons';
-import { MarkdownRenderer } from './MarkdownRenderer';
+import { generateContent, generateContentStream } from '../services/geminiService.ts';
+import { extractTextFromFile, createDocxFromText } from '../services/documentProcessor.ts';
+import { ChatMessage } from '../types.ts';
+import { PaperclipIcon, SendIcon, FileIcon, DownloadIcon, CopyIcon, MicrophoneIcon, TrashIcon, SpeakerIcon, StopIcon } from './Icons.tsx';
+import { MarkdownRenderer } from './MarkdownRenderer.tsx';
 import toast from 'react-hot-toast';
 
 // Web Speech API
@@ -258,36 +257,36 @@ _لمقارنة الهواتف، يرجى استخدام زر "المقارنة"
         {messages.map((msg) => (
           <div key={msg.id} className={`flex items-start group ${msg.sender === 'user' ? 'justify-end' : msg.sender === 'system' ? 'justify-center' : 'justify-start'}`}>
             {msg.sender === 'ai' && msg.text && (
-              <div className="flex flex-col mt-0.5 mr-1 space-y-1 opacity-70 hover:opacity-100 transition-opacity">
-                <button onClick={() => handleSpeak(msg.text, msg.id)} className={`p-1 text-gray-400 hover:text-white bg-gray-800/80 rounded-full ${speakingId === msg.id ? 'text-cyan-400 animate-pulse ring-1 ring-cyan-500' : ''}`} title="نطق">
-                   {speakingId === msg.id ? <StopIcon className="w-3 h-3" /> : <SpeakerIcon className="w-3 h-3" />}
+              <div className="flex flex-col mt-0.5 mr-1 space-y-2 opacity-80 hover:opacity-100 transition-opacity">
+                <button onClick={() => handleSpeak(msg.text, msg.id)} className={`p-1.5 text-gray-400 hover:text-white bg-gray-800/80 rounded-full shadow-sm ${speakingId === msg.id ? 'text-cyan-400 animate-pulse ring-1 ring-cyan-500' : ''}`} title="نطق">
+                   {speakingId === msg.id ? <StopIcon className="w-4 h-4" /> : <SpeakerIcon className="w-4 h-4" />}
                 </button>
-                <button onClick={() => handleCopy(msg.text, msg.id)} className="p-1 text-gray-400 hover:text-white bg-gray-800/80 rounded-full" title="نسخ">
-                   <CopyIcon className="w-3 h-3" />
+                <button onClick={() => handleCopy(msg.text, msg.id)} className="p-1.5 text-gray-400 hover:text-white bg-gray-800/80 rounded-full shadow-sm" title="نسخ">
+                   <CopyIcon className="w-4 h-4" />
                 </button>
-                <button onClick={() => handleDownloadDocx(msg.text)} className="p-1 text-gray-400 hover:text-cyan-400 bg-gray-800/80 rounded-full" title="تحميل">
-                   <FileIcon className="w-3 h-3" />
+                <button onClick={() => handleDownloadDocx(msg.text)} className="p-1.5 text-gray-400 hover:text-cyan-400 bg-gray-800/80 rounded-full shadow-sm" title="تحميل">
+                   <FileIcon className="w-4 h-4" />
                 </button>
               </div>
             )}
 
-             <div className={`max-w-[90%] sm:max-w-[85%] rounded-2xl px-3 py-2 relative shadow-md border border-white/5 ${
+             <div className={`max-w-[90%] sm:max-w-[85%] rounded-2xl px-3.5 py-2.5 relative shadow-md border border-white/5 ${
                 msg.sender === 'user' ? 'bg-cyan-700 rounded-br-sm' : 
-                msg.sender === 'system' ? 'bg-gray-700/50 text-gray-400 text-center text-[9px] py-1 w-full max-w-sm mx-auto' : 
+                msg.sender === 'system' ? 'bg-gray-700/50 text-gray-400 text-center text-[10px] py-1 w-full max-w-sm mx-auto' : 
                 'bg-gray-800 rounded-bl-sm'
             }`}>
               {msg.imagePreview && <img src={msg.imagePreview} alt="preview" className="rounded-lg max-h-40 mb-2 object-cover w-full" />}
               {msg.fileInfo && (
                 <div className="flex items-center gap-2 p-2 bg-black/20 rounded-md mb-2">
                   <FileIcon className="w-4 h-4 text-cyan-300"/>
-                  <span className="text-gray-300 text-[10px] truncate">{msg.fileInfo.name}</span>
+                  <span className="text-gray-300 text-[11px] truncate">{msg.fileInfo.name}</span>
                 </div>
               )}
               
-               {msg.sender === 'ai' ? <MarkdownRenderer text={msg.text} /> : <p className="whitespace-pre-wrap leading-relaxed">{msg.text}</p>}
+               {msg.sender === 'ai' ? <MarkdownRenderer text={msg.text} /> : <p className="whitespace-pre-wrap leading-relaxed text-sm">{msg.text}</p>}
               
               {msg.downloadLink && (
-                  <a href={msg.downloadLink.url} download={msg.downloadLink.filename} className="mt-3 flex items-center justify-center gap-2 bg-cyan-600/90 hover:bg-cyan-600 text-white py-2 px-4 rounded-xl transition-all w-full text-[10px] font-bold">
+                  <a href={msg.downloadLink.url} download={msg.downloadLink.filename} className="mt-3 flex items-center justify-center gap-2 bg-cyan-600/90 hover:bg-cyan-600 text-white py-2 px-4 rounded-xl transition-all w-full text-[11px] font-bold">
                     <DownloadIcon className="w-3 h-3" />
                     <span>تحميل الملف</span>
                   </a>
@@ -310,31 +309,31 @@ _لمقارنة الهواتف، يرجى استخدام زر "المقارنة"
         <div ref={messagesEndRef} />
       </div>
       
-      {/* Input Area - Compact for small screens */}
-      <div className="absolute bottom-0 left-0 right-0 z-50 bg-[#0f1115] border-t border-gray-800 p-1.5 shadow-[0_-5px_15px_rgba(0,0,0,0.3)]">
+      {/* Input Area - Improved for mobile */}
+      <div className="absolute bottom-0 left-0 right-0 z-50 bg-[#0f1115] border-t border-gray-800 p-2 shadow-[0_-5px_15px_rgba(0,0,0,0.3)]">
           
           {(filePreview || (attachedFile && !attachedFile.type.startsWith('image/'))) && (
             <div className="absolute bottom-full left-0 right-0 p-2 bg-[#0f1115] border-t border-gray-800 animate-slide-up">
-                <div className="relative w-12 h-12 bg-gray-800 rounded-lg border border-gray-700 flex items-center justify-center">
+                <div className="relative w-14 h-14 bg-gray-800 rounded-lg border border-gray-700 flex items-center justify-center">
                     {filePreview ? (
                         <img src={filePreview} alt="Selected" className="w-full h-full object-cover rounded-lg" />
                     ) : (
                         <FileIcon className="w-6 h-6 text-gray-500" />
                     )}
-                    <button onClick={resetInput} className="absolute -top-2 -right-2 bg-red-500 rounded-full w-4 h-4 text-white text-[9px] leading-none flex items-center justify-center shadow-sm">&times;</button>
+                    <button onClick={resetInput} className="absolute -top-2 -right-2 bg-red-500 rounded-full w-5 h-5 text-white text-[10px] leading-none flex items-center justify-center shadow-sm border border-gray-900">&times;</button>
                 </div>
             </div>
           )}
 
-          <div className="flex items-center gap-1 max-w-3xl mx-auto px-1">
+          <div className="flex items-center gap-2 max-w-3xl mx-auto">
             {recognition && (
-            <button onClick={toggleRecording} className={`flex-shrink-0 p-2 rounded-full bg-gray-800 text-gray-400 hover:text-white transition-all ${isRecording ? 'text-red-500 ring-1 ring-red-500' : ''}`} disabled={isLoading}>
-                <MicrophoneIcon className="w-4 h-4" />
+            <button onClick={toggleRecording} className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 text-gray-400 hover:text-white transition-all ${isRecording ? 'text-red-500 ring-2 ring-red-500 bg-red-500/10' : ''}`} disabled={isLoading}>
+                <MicrophoneIcon className="w-5 h-5" />
             </button>
             )}
             
-            <button onClick={() => fileInputRef.current?.click()} className="flex-shrink-0 p-2 rounded-full bg-gray-800 text-gray-400 hover:text-cyan-400 transition-all" disabled={isLoading}>
-                <PaperclipIcon className="w-4 h-4" />
+            <button onClick={() => fileInputRef.current?.click()} className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 text-gray-400 hover:text-cyan-400 transition-all" disabled={isLoading}>
+                <PaperclipIcon className="w-5 h-5" />
             </button>
 
             <input 
@@ -345,13 +344,14 @@ _لمقارنة الهواتف، يرجى استخدام زر "المقارنة"
                 onFocus={() => onInputFocus && onInputFocus(true)}
                 onBlur={() => onInputFocus && onInputFocus(false)}
                 placeholder="اكتب هنا..." 
-                className="flex-1 min-w-0 bg-gray-800 text-white border-0 rounded-full px-3 py-2.5 focus:ring-1 focus:ring-cyan-500/50 placeholder-gray-600 text-[10px] sm:text-xs" 
+                enterKeyHint="send"
+                className="flex-1 min-w-0 bg-gray-800 text-white border border-transparent focus:border-cyan-500/50 rounded-full px-4 py-2.5 focus:ring-2 focus:ring-cyan-500/20 placeholder-gray-500 text-sm sm:text-base" 
                 disabled={isLoading} 
             />
             <input type="file" accept="image/*,application/pdf,.docx" ref={fileInputRef} onChange={handleFileChange} className="hidden" disabled={isLoading} />
             
-            <button onClick={handleSend} className="flex-shrink-0 p-2 rounded-full bg-cyan-600 text-white shadow-lg hover:bg-cyan-500 disabled:opacity-50 transition-transform active:scale-95" disabled={isLoading || (!input.trim() && !attachedFile)}>
-                <SendIcon className="w-4 h-4" />
+            <button onClick={handleSend} className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-cyan-600 text-white shadow-lg hover:bg-cyan-500 disabled:opacity-50 disabled:bg-gray-700 transition-transform active:scale-95" disabled={isLoading || (!input.trim() && !attachedFile)}>
+                <SendIcon className="w-5 h-5" />
             </button>
           </div>
       </div>

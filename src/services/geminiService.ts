@@ -1,7 +1,6 @@
-
 import { GoogleGenAI, GenerateContentResponse, Type, Modality } from "@google/genai";
-import { SYSTEM_PROMPT } from '../constants';
-import { NewsItem, PhoneNewsItem, ChatMessage } from "../types";
+import { SYSTEM_PROMPT } from '../constants.ts';
+import { NewsItem, PhoneNewsItem, ChatMessage } from "../types.ts";
 
 interface TextPart {
   text: string;
@@ -15,7 +14,14 @@ interface ImagePart {
 type Part = TextPart | ImagePart;
 
 const getApiKey = (): string => {
-  return localStorage.getItem('gemini-api-key') || process.env.API_KEY || '';
+  const stored = localStorage.getItem('gemini-api-key');
+  if (stored) return stored;
+  
+  // Safe check for process.env in browser
+  if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+      return process.env.API_KEY;
+  }
+  return '';
 };
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

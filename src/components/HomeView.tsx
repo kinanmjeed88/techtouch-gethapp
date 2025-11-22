@@ -1,7 +1,6 @@
-
 import React from 'react';
-import { SparklesIcon, NewsIcon, InfoIcon, ArrowRightIcon, CompareIcon, PhoneIcon, MagicWandIcon } from './Icons';
-import { View } from '../types';
+import { SparklesIcon, NewsIcon, InfoIcon, ArrowRightIcon, CompareIcon, PhoneIcon, MagicWandIcon } from './Icons.tsx';
+import { View } from '../types.ts';
 
 interface HomeViewProps {
   setView: (view: View) => void;

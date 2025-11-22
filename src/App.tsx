@@ -1,18 +1,17 @@
-
 import React, { useState, useEffect } from 'react';
-import { ChatView } from './components/ChatView';
-import { PersonalInfoView } from './components/PersonalInfoView';
-import { AiNewsView } from './components/AiNewsView';
-import { PhoneNewsView } from './components/PhoneNewsView';
-import { HomeView } from './components/HomeView';
-import { ComparisonView } from './components/ComparisonView';
-import { AboutView } from './components/AboutView';
-import { ImageEditorView } from './components/ImageEditorView';
-import { SparklesIcon, NewsIcon, LogoutIcon, HomeIcon, CompareIcon, PhoneIcon, InfoIcon, MagicWandIcon } from './components/Icons';
-import { ChatMessage, View } from './types';
-import { ApiKeyModal } from './components/ApiKeyModal';
+import { ChatView } from './components/ChatView.tsx';
+import { PersonalInfoView } from './components/PersonalInfoView.tsx';
+import { AiNewsView } from './components/AiNewsView.tsx';
+import { PhoneNewsView } from './components/PhoneNewsView.tsx';
+import { HomeView } from './components/HomeView.tsx';
+import { ComparisonView } from './components/ComparisonView.tsx';
+import { AboutView } from './components/AboutView.tsx';
+import { ImageEditorView } from './components/ImageEditorView.tsx';
+import { SparklesIcon, NewsIcon, LogoutIcon, HomeIcon, CompareIcon, PhoneIcon, InfoIcon, MagicWandIcon } from './components/Icons.tsx';
+import { ChatMessage, View } from './types.ts';
+import { ApiKeyModal } from './components/ApiKeyModal.tsx';
 import { Toaster } from 'react-hot-toast';
-import { APP_LOGO, LOCAL_USER_IMAGE } from './constants';
+import { APP_LOGO, LOCAL_USER_IMAGE } from './constants.ts';
 
 const App: React.FC = () => {
   const [view, setView] = useState<View>('home');
@@ -29,8 +28,10 @@ const App: React.FC = () => {
     const storedKey = localStorage.getItem('gemini-api-key');
     if (storedKey) {
       setApiKey(storedKey);
-    } else if (process.env.API_KEY) {
-        setApiKey(process.env.API_KEY);
+    } else {
+        // Safe check for process.env to avoid crash in browser environment
+        const envKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : '';
+        if (envKey) setApiKey(envKey);
     }
   }, []);
 
@@ -55,14 +56,15 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="h-screen w-screen bg-gray-900 text-gray-200 flex flex-col font-sans text-sm overflow-hidden relative">
+    // Change: h-[100dvh] handles mobile browser address bars better than h-screen
+    <div className="h-[100dvh] w-screen bg-gray-900 text-gray-200 flex flex-col font-sans text-sm overflow-hidden relative">
       <Toaster position="top-center" />
       
-      {/* Background Image Layer with Fallback handling */}
+      {/* Background Image Layer */}
       <div className="absolute inset-0 z-0 overflow-hidden">
          <img 
             src={bgImageSrc}
-            onError={() => setBgImageSrc(APP_LOGO)} // Fallback to Logo if local file fails
+            onError={() => setBgImageSrc(APP_LOGO)} 
             alt="Background"
             className="absolute inset-0 w-full h-full object-cover opacity-20 blur-sm scale-110"
          />
@@ -116,7 +118,7 @@ const App: React.FC = () => {
           </main>
           
           {view !== 'home' && view !== 'about' && (
-              <nav className="flex-shrink-0 bg-gray-800/80 backdrop-blur-md border-t border-gray-700 p-1 flex justify-around items-center z-20">
+              <nav className="flex-shrink-0 bg-gray-800/80 backdrop-blur-md border-t border-gray-700 p-1 flex justify-around items-center z-20 pb-safe">
                   <NavButton active={view === 'chat'} onClick={() => setView('chat')} icon={<SparklesIcon className="w-5 h-5" />} label="Chat" />
                   <NavButton active={view === 'aiNews'} onClick={() => setView('aiNews')} icon={<NewsIcon className="w-5 h-5" />} label="News" />
                   <NavButton active={view === 'imageEditor'} onClick={() => setView('imageEditor')} icon={<MagicWandIcon className="w-5 h-5" />} label="Studio" />
