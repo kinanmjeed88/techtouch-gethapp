@@ -5,6 +5,9 @@ declare const docx: any;
 
 export const extractTextFromFile = async (file: File): Promise<string | null> => {
   if (file.type === 'application/pdf') {
+    if (typeof pdfjsLib === 'undefined') {
+        throw new Error("PDF library not loaded yet. Please check your internet connection.");
+    }
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
     let text = '';
@@ -15,6 +18,9 @@ export const extractTextFromFile = async (file: File): Promise<string | null> =>
     }
     return text;
   } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    if (typeof mammoth === 'undefined') {
+        throw new Error("DOCX library not loaded.");
+    }
     const arrayBuffer = await file.arrayBuffer();
     const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
     return result.value;
@@ -25,6 +31,8 @@ export const extractTextFromFile = async (file: File): Promise<string | null> =>
 };
 
 export const createPdfFromText = async (text: string): Promise<string> => {
+  if (typeof jspdf === 'undefined') return createTxtFromText(text);
+
   const { jsPDF } = jspdf;
   const doc = new jsPDF();
   

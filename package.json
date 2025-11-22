@@ -2,7 +2,7 @@
   "name": "personal-ai-assistant",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://kinanmjeed88.github.io/techtouch-gethapp",
   "dependencies": {
     "@google/genai": "^1.29.1",
     "lucide-react": "^0.417.0",

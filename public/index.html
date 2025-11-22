@@ -11,24 +11,36 @@
     <!-- Updated to Professional Geometric Logo -->
     <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ibG9nb0dyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDZTRkQ3IiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzQjgyRjYiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzExMTgyNyIgLz4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgc3Ryb2tlPSJ1cmwoI2xvZ29HcmFkKSIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIiBzdHJva2UtZGFzaGFycmF5PSIyODAgNDAiIHRyYW5zZm9ybT0icm90YXRlKDQ1IDUwIDUwKSIgLz4KICA8IS0tIFRlY2ggVCBzaGFwZSAtLT4KICA8cGF0aCBkPSJNMzAgMzVINTAgVjcwIiBzdHJva2U9InVybCgjbG9nb0dyYWQpIiBzdHJva2Utd2lkdGg9IjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgLz4KICA8cGF0aCBkPSJNNTAgMzVINzAiIHN0cm9rZT0idXJsKCNsb2dvR3JhZCkiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiAvPgogIDwhLS0gQ2lyY3VpdCBkb3RzIC0tPgogIDxjaXJjbGUgY3g9IjMwIiBjeT0iMzUiIHI9IjQiIGZpbGw9IiMzQjgyRjYiIC8+CiAgPGNpcmNsZSBjeD0iNzAiIGN5PSIzNSIgcj0iNCIgZmlsbD0iIzA2Q0ZENyIgLz4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjcwIiByPSI0IiBmaWxsPSIjMDZTRkQ3IiAvPgo8L3N2Zz4=">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- PDF Processing Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    
+    <!-- PDF Processing Libraries (Latest Stable Version 3.11.174) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
       // WORKAROUND: Bypass GitHub Pages/CORS protection on Workers by loading via Blob
-      if (typeof pdfjsLib !== 'undefined') {
-        const workerUrl = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
-        fetch(workerUrl)
-          .then(response => response.text())
-          .then(txt => {
-            const blob = new Blob([txt], { type: "text/javascript" });
-            pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(blob);
-          })
-          .catch(err => {
-            console.error("Failed to load PDF worker via Blob, falling back to CDN (might fail on GitHub)", err);
-            pdfjsLib.GlobalWorkerOptions.workerSrc = workerUrl;
-          });
-      }
+      // This "tricks" the browser into thinking the worker file is local.
+      window.addEventListener('DOMContentLoaded', () => {
+        if (typeof pdfjsLib !== 'undefined') {
+          // Explicitly set the worker version to match the main library
+          pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          
+          const workerUrl = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          fetch(workerUrl)
+            .then(response => {
+              if (!response.ok) throw new Error("Network response was not ok");
+              return response.text();
+            })
+            .then(txt => {
+              const blob = new Blob([txt], { type: "text/javascript" });
+              const blobUrl = URL.createObjectURL(blob);
+              pdfjsLib.GlobalWorkerOptions.workerSrc = blobUrl;
+              console.log("PDF Worker loaded locally via Blob (Protection Bypassed)");
+            })
+            .catch(err => {
+              console.warn("Failed to load PDF worker via Blob, falling back to CDN. PDF features might be limited by CORS.", err);
+            });
+        }
+      });
     </script>
+
     <!-- DOCX Processing Library (Reading) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.18/mammoth.browser.min.js"></script>
     <!-- DOCX Generation Library (Writing) -->
