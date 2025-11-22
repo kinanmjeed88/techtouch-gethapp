@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { generateContent, generateContentStream } from '../services/geminiService';
 import { extractTextFromFile, createDocxFromText } from '../services/documentProcessor';
 import { ChatMessage } from '../types';
-import { PaperclipIcon, SendIcon, FileIcon, DownloadIcon, CopyIcon, MicrophoneIcon, TrashIcon } from './Icons';
+import { PaperclipIcon, SendIcon, FileIcon, DownloadIcon, CopyIcon, MicrophoneIcon, TrashIcon, SpeakerIcon, StopIcon } from './Icons';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import toast from 'react-hot-toast';
 
@@ -39,6 +39,7 @@ export const ChatView: React.FC<ChatViewProps> = ({ messages, setMessages, onScr
   const [isLoading, setIsLoading] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [speakingId, setSpeakingId] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -72,8 +73,27 @@ _لمقارنة الهواتف، يرجى استخدام زر "المقارنة"
     setTimeout(() => setCopiedId(null), 1500);
   };
 
+  const handleSpeak = (text: string, id: string) => {
+    if (speakingId === id) {
+      window.speechSynthesis.cancel();
+      setSpeakingId(null);
+      return;
+    }
+
+    window.speechSynthesis.cancel(); // Stop any current speech
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ar-SA';
+    
+    utterance.onend = () => setSpeakingId(null);
+    utterance.onerror = () => setSpeakingId(null);
+    
+    setSpeakingId(id);
+    window.speechSynthesis.speak(utterance);
+  };
+
   const handleClearChat = () => {
       if(window.confirm("هل أنت متأكد من رغبتك في حذف المحادثة بالكامل والبدء من جديد؟")) {
+          window.speechSynthesis.cancel();
           setMessages([]); 
           localStorage.removeItem('user_memory'); // Clear simple memory if any
           toast.success("تم حذف المحادثة بنجاح");
@@ -161,6 +181,7 @@ _لمقارنة الهواتف، يرجى استخدام زر "المقارنة"
 
   const handleSend = async () => {
     if (!input.trim() && !attachedFile) return;
+    window.speechSynthesis.cancel(); // Stop talking if user interrupts
     setIsLoading(true);
     const currentInput = input;
     const userMessage: ChatMessage = {
@@ -238,6 +259,9 @@ _لمقارنة الهواتف، يرجى استخدام زر "المقارنة"
           <div key={msg.id} className={`flex items-start group ${msg.sender === 'user' ? 'justify-end' : msg.sender === 'system' ? 'justify-center' : 'justify-start'}`}>
             {msg.sender === 'ai' && msg.text && (
               <div className="flex flex-col mt-0.5 mr-1 space-y-1 opacity-70 hover:opacity-100 transition-opacity">
+                <button onClick={() => handleSpeak(msg.text, msg.id)} className={`p-1 text-gray-400 hover:text-white bg-gray-800/80 rounded-full ${speakingId === msg.id ? 'text-cyan-400 animate-pulse ring-1 ring-cyan-500' : ''}`} title="نطق">
+                   {speakingId === msg.id ? <StopIcon className="w-3 h-3" /> : <SpeakerIcon className="w-3 h-3" />}
+                </button>
                 <button onClick={() => handleCopy(msg.text, msg.id)} className="p-1 text-gray-400 hover:text-white bg-gray-800/80 rounded-full" title="نسخ">
                    <CopyIcon className="w-3 h-3" />
                 </button>

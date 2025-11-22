@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
   <head>
@@ -15,8 +14,19 @@
     <!-- PDF Processing Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <script>
+      // WORKAROUND: Bypass GitHub Pages/CORS protection on Workers by loading via Blob
       if (typeof pdfjsLib !== 'undefined') {
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+        const workerUrl = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+        fetch(workerUrl)
+          .then(response => response.text())
+          .then(txt => {
+            const blob = new Blob([txt], { type: "text/javascript" });
+            pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(blob);
+          })
+          .catch(err => {
+            console.error("Failed to load PDF worker via Blob, falling back to CDN (might fail on GitHub)", err);
+            pdfjsLib.GlobalWorkerOptions.workerSrc = workerUrl;
+          });
       }
     </script>
     <!-- DOCX Processing Library (Reading) -->
@@ -36,7 +46,8 @@
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
     "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
-    "remark-gfm": "https://esm.sh/remark-gfm@4?bundle"
+    "remark-gfm": "https://esm.sh/remark-gfm@4?bundle",
+    "react-hot-toast": "https://aistudiocdn.com/react-hot-toast@^2.6.0"
   }
 }
 </script>
