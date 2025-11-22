@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChatMessage, PersonalInfoItem } from '../types';
-import { PERSONAL_DATA_STRUCTURED } from '../constants';
-import { SendIcon, MicrophoneIcon, TelegramIcon, YouTubeIcon, TikTokIcon, FacebookIcon, InstagramIcon, RobotIcon, ArrowRightIcon } from './Icons';
-import { generateContent } from '../services/geminiService';
-import { MarkdownRenderer } from './MarkdownRenderer';
+import { ChatMessage, PersonalInfoItem } from '../types.ts';
+import { PERSONAL_DATA_STRUCTURED } from '../constants.ts';
+import { SendIcon, MicrophoneIcon, TelegramIcon, YouTubeIcon, TikTokIcon, FacebookIcon, InstagramIcon, RobotIcon, ArrowRightIcon } from './Icons.tsx';
+import { generateContent } from '../services/geminiService.ts';
+import { MarkdownRenderer } from './MarkdownRenderer.tsx';
 
 // Web Speech API
 const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;

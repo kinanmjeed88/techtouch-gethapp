@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { getAiNews } from '../services/geminiService';
-import { NewsItem } from '../types';
-import { TrashIcon, SearchIcon, RefreshIcon } from './Icons';
+import { getAiNews } from '../services/geminiService.ts';
+import { NewsItem } from '../types.ts';
+import { TrashIcon, SearchIcon, RefreshIcon } from './Icons.tsx';
 
 interface AiNewsViewProps {
     onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;

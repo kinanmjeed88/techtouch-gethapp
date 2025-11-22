@@ -1,6 +1,6 @@
 import { GoogleGenAI, GenerateContentResponse, Type, Modality } from "@google/genai";
-import { SYSTEM_PROMPT } from '../constants';
-import { NewsItem, PhoneNewsItem, ChatMessage } from "../types";
+import { SYSTEM_PROMPT } from '../constants.ts';
+import { NewsItem, PhoneNewsItem, ChatMessage } from "../types.ts";
 
 interface TextPart {
   text: string;
@@ -19,7 +19,9 @@ const getApiKey = (): string => {
   
   // Safe check for process.env to avoid crash
   try {
+    // @ts-ignore
     if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+        // @ts-ignore
         return process.env.API_KEY;
     }
   } catch (e) {

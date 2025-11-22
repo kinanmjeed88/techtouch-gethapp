@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { generateContentStream } from '../services/geminiService';
-import { CompareIcon } from './Icons';
-import { MarkdownRenderer } from './MarkdownRenderer';
+import { generateContentStream } from '../services/geminiService.ts';
+import { CompareIcon } from './Icons.tsx';
+import { MarkdownRenderer } from './MarkdownRenderer.tsx';
 
 export const ComparisonView: React.FC = () => {
   const [device1, setDevice1] = useState('');
