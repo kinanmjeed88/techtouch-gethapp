@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { generateEditedImage } from '../services/geminiService.ts';
-import { PhotoIcon, DownloadIcon, MagicWandIcon } from './Icons.tsx';
+import { generateEditedImage } from '../services/geminiService';
+import { PhotoIcon, DownloadIcon, MagicWandIcon } from './Icons';
 
 const CLOTHING_OPTIONS = [
   { label: 'بدون تغيير', value: '' },

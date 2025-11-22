@@ -1,6 +1,6 @@
 import { GoogleGenAI, GenerateContentResponse, Type, Modality } from "@google/genai";
-import { SYSTEM_PROMPT } from '../constants.ts';
-import { NewsItem, PhoneNewsItem, ChatMessage } from "../types.ts";
+import { SYSTEM_PROMPT } from '../constants';
+import { NewsItem, PhoneNewsItem, ChatMessage } from "../types";
 
 interface TextPart {
   text: string;
